@@ -39,9 +39,13 @@ class PokemonPresenter {
         return list[indexPath.row].name
     }
     
-    func numberOfPokemon() -> Int {
+    func numberOfPokemon(inSection section: Int) -> Int {
         guard let list = pokemonList else { return 0 }
         return list.count
+    }
+    
+    func numberOfSections() -> Int {
+        return 1
     }
 }
 

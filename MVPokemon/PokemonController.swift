@@ -16,22 +16,14 @@ class PokemonController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         presenter = PokemonPresenter()
         presenter.view = self
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "pokecell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         presenter.fetchPokemonList()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 }
 
@@ -48,28 +40,32 @@ extension PokemonController: UITableViewDelegate, UITableViewDataSource {
 
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return presenter.numberOfSections()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.numberOfPokemon()
+        return presenter.numberOfPokemon(inSection: section)
     }
     
 }
 
 extension PokemonController: PokemonPresenterView {
     func beginLoading(withText text: String) {
-        self.loader = UIAlertController(title: "Loading...", message: "Loading your pokemon!", preferredStyle: .alert)
-        self.present(self.loader!, animated: false)
+        DispatchQueue.main.async {
+            self.loader = UIAlertController(title: "Loading...", message: "Loading your pokemon!", preferredStyle: .alert)
+            self.present(self.loader!, animated: true)
+        }
     }
     
     func endLoading() {
-        self.loader?.dismiss(animated: true, completion: nil)
+        DispatchQueue.main.async {
+            guard let loader = self.loader else { return }
+            loader.dismiss(animated: true, completion: nil)
+        }
     }
     
     func showError(withText text: String) {
-        self.loader = UIAlertController(title: "Error!", message: "The app wont work now, sorry. You can come back another time.", preferredStyle: .alert)
-        self.present(self.loader!, animated: false)
+        print(text)
     }
     
     func refreshView() {

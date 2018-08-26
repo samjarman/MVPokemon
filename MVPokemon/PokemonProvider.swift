@@ -34,7 +34,6 @@ protocol PokemonProviderFetchPokemonListDelegate: class {
 }
 class PokemonProvider {
     weak var listDelegate: PokemonProviderFetchPokemonListDelegate?
-    //weak var detailsDelegate: PokemonProviderFetchPokemonListDelegate?
 
     func getPokemonList(session: URLSession = .shared) {
         guard let delegate = self.listDelegate else { return }
@@ -53,7 +52,7 @@ class PokemonProvider {
                     print(pokemans)
                     delegate.didSuccessfullyFetchPokemonList(withList: pokemans.results!)
                 } catch let err {
-                    print("Err", err)
+                    delegate.didFailToFetchPokemonList(withError: err)
                 }
             }
         }
