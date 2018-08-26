@@ -10,6 +10,8 @@ import UIKit
 
 class PokemonController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    var loader: UIAlertController? = nil
+    
     var presenter: PokemonPresenter!
     
     override func viewDidLoad() {
@@ -40,7 +42,7 @@ extension PokemonController: UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "pokecell") else { fatalError("Unable to dequeue table view cell")}
-        cell.textLabel?.text = presenter.pokemonName(forIndexPath: indexPath)?.uppercased()
+        cell.textLabel?.text = presenter.pokemonName(forIndexPath: indexPath)?.capitalized
         return cell
     }
 
@@ -57,15 +59,17 @@ extension PokemonController: UITableViewDelegate, UITableViewDataSource {
 
 extension PokemonController: PokemonPresenterView {
     func beginLoading(withText text: String) {
-        
+        self.loader = UIAlertController(title: "Loading...", message: "Loading your pokemon!", preferredStyle: .alert)
+        self.present(self.loader!, animated: false)
     }
     
     func endLoading() {
-        
+        self.loader?.dismiss(animated: true, completion: nil)
     }
     
     func showError(withText text: String) {
-        
+        self.loader = UIAlertController(title: "Error!", message: "The app wont work now, sorry. You can come back another time.", preferredStyle: .alert)
+        self.present(self.loader!, animated: false)
     }
     
     func refreshView() {

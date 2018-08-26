@@ -6,9 +6,9 @@
 //  Copyright © 2018 Sam Jarman. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-protocol PokemonPresenterView {
+protocol PokemonPresenterView: class {
     func beginLoading(withText text: String)
     func endLoading()
     func showError(withText text: String)
@@ -16,7 +16,7 @@ protocol PokemonPresenterView {
 }
 
 class PokemonPresenter {
-    var view: PokemonPresenterView?
+    weak var view: PokemonPresenterView?
     var provider: PokemonProvider!
     var pokemonList: [PokemonIndex]?
     

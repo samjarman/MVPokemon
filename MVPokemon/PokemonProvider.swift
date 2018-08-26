@@ -25,7 +25,7 @@ struct PokemonIndex: Codable {
     }
 }
 
-protocol PokemonProviderFetchPokemonListDelegate {
+protocol PokemonProviderFetchPokemonListDelegate: class {
     func didBeginFetchingPokemonList()
     func didFinishFetchingPokemonList()
     func didSuccessfullyFetchPokemonList(withList list: [PokemonIndex])
@@ -33,8 +33,8 @@ protocol PokemonProviderFetchPokemonListDelegate {
 
 }
 class PokemonProvider {
-    var listDelegate: PokemonProviderFetchPokemonListDelegate?
-    var detailsDelegate: PokemonProviderFetchPokemonListDelegate?
+    weak var listDelegate: PokemonProviderFetchPokemonListDelegate?
+    //weak var detailsDelegate: PokemonProviderFetchPokemonListDelegate?
 
     func getPokemonList(session: URLSession = .shared) {
         guard let delegate = self.listDelegate else { return }
