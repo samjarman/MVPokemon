@@ -1,2 +1,6 @@
 
 *.xcscheme
+
+*.xcsettings
+
+*.xcbkptlist
